@@ -1,0 +1,69 @@
+###### dir
+rootdir := ./
+d_make := $(rootdir)makefile/
+d_build := $(rootdir)build/
+d_temp := $(rootdir)temp/
+d_project := $(rootdir)project/
+
+ifdef host_win32
+d_project := $(d_project)win32/
+else ifdef host_win64
+d_project := $(d_project)win64/
+else ifdef host_nx32
+d_project := $(d_project)nx32/
+else ifdef host_nx64
+d_project := $(d_project)nx64/
+else
+d_project = TRAP
+endif
+
+d_include = $(d_project)include/
+d_dev = $(rootdir)dev/
+d_wrap = $(rootdir)wrap/
+######
+
+ifdef host_win32
+compile = i686-w64-mingw32
+CC = $(compile)-gcc
+ar = $(compile)-ar
+ranlib = $(compile)-ranlib
+wres = $(compile)-windres
+strip = $(compile)-strip.exe
+else ifdef host_win64
+compile = notvalhostwin64
+CC = notvalhostwin64
+ar = notvalhostwin64
+ranlib = notvalhostwin64
+wres = notvalhostwin64
+strip = notvalhostwin64
+else ifdef host_nx32
+compile = notvalhostnx32
+CC = notvalhostnx32
+ar = notvalhostnx32
+ranlib = notvalhostnx32
+wres = notvalhostnx32
+strip = notvalhostnx32
+else ifdef host_nx64
+compile = notvalhostnx64
+CC = notvalhostnx64
+ar = notvalhostnx64
+ranlib = notvalhostnx64
+wres = notvalhostnx64
+strip = notvalhostnx64
+else
+compile = TRAP
+CC = TRAP
+ar = TRAP
+ranlib = TRAP
+wres = TRAP
+strip = TRAP
+endif
+
+### ### ### include file
+include $(d_make)/makedef
+include $(d_make)/makefuncs
+include $(d_make)/makefile
+
+info:
+	@echo $(d_project)
+	@echo $(compile)

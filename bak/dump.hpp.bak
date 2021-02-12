@@ -1,0 +1,125 @@
+////////////////////////////////////////////////////////////////////////////////
+//// Liasteria (creative group). File created Librianets					////
+//// Liasteria (творческая группа). Фаил создан Librianets					////
+////																		////
+//// Intellectual property rights belong Liasteria							////
+//// Права на интеллектуальную собственность принадлежат Liasteria			////
+//// 																		////
+//// Use with copyright is permitted without agreement						////
+//// Использование с сохраниением копирайта разрешается без согласования	////
+//// 																		////
+//// Programming is an art													////
+//// Everyone has the right to creative freedom								////
+//// I create as I see														////
+////																		////
+//// For all questions, as well as suggestions for improving the code:		////
+//// По всем вопросам, а также с предложениями улучшения кода:				////
+//// librianets@gmail.com													////
+////////////////////////////////////////////////////////////////////////////////
+////////////////////////////////////////////////// /////////////////////////////
+////																		////
+//// liasteria api - dump module											////
+////																		////
+////////////////////////////////////////////////////////////////////////////////
+
+#ifndef DUMP_HPP
+#define DUMP_HPP
+
+namespace LIAPI
+{
+//------------------------------------ Class CDUMP ------------------------------------//
+class CDUMP
+{
+public:
+//------------------------------------ Constructor ------------------------------------//
+	CDUMP(void) {Init();}
+	~CDUMP(void) {Deinit();}
+//----------------------------- Class diagnostic options -----------------------------//
+public:
+
+	inline unsigned int GetStatusClass(void) {return iStatusClass;}
+	unsigned int GetPrevStatusClass(void) 
+		{if (iErrorCount == 0) {return iErrorHistory[iErrorCount];} else 
+			{return iErrorHistory[iErrorCount-1];}}
+			
+	unsigned int GetOtherStatusClass(int iOtherStatusClass) 
+		{if (iOtherStatusClass > 0xFE || iOtherStatusClass < 0) {iOtherStatusClass == 0;} else {} 
+			return iErrorHistory[iOtherStatusClass];}
+			
+	wchar_t* GetInfoStatusClass(unsigned int iStatusClass) 
+		{return &strStatusClassInfo[iStatusClass][0];}
+		
+	int GetErrorCount (void) {return iErrorCount;}
+	wchar_t* GetInfoClass(void) {return &strStatusClassInfo[0][0];}
+
+private:
+	unsigned int iStatusClass = 0;
+	int iErrorHistory [0xFF] = {0};
+	int iErrorCount = 0; // 
+	int iErrorCountHistory = 0; // счетчик от 0 до 0xfe
+	int iCountCritical = 0; // заменить
+	
+	void ClearStatusClass(void) {iStatusClass = 0;}
+	
+	void SetStatusClass(unsigned int iNewStatusClass) 
+	{
+		iStatusClass = iNewStatusClass;
+		iErrorHistory[iErrorCountHistory] = iNewStatusClass;
+		iErrorCountHistory++;
+		iErrorCount++;
+		if (iErrorCountHistory == 0xFF) {iErrorCountHistory = 0;} else {}
+	}		
+
+//------------------------------------ Error code ------------------------------------//
+#define LIAPI_DMPM_INFOCLASS	 	0x00
+	wchar_t strStatusClassInfo [10] [0xFF] =
+	{
+		L"Liasteria API - dump module",											//0 LIAPI_DMPM_INFOCLASS
+	};
+//-------------------------------------------------------------------------------------//
+
+private:
+//------------------------------- Private functions -----------------------------------//
+	void Init(void);
+	void Deinit(void);
+	
+	//typedef void (*func_sign) (void);
+	
+	void SigException2(void)
+	{
+		
+	}
+	//func_sign f_sign = &SigException2;
+	
+	void ExecuteFunc (void)
+	{
+		for (unsigned int x = 0; x < iCountLpFunc; x++)
+	{
+		if (lp_func[x] != NULL)
+		{
+			lp_func[x] ();
+		} else {}
+	}
+	}
+		
+	//void SigException(int signum);
+	
+
+	
+	
+//------------------------------- Private variables -----------------------------------//
+
+
+public:
+//------------------------------- Public functions -----------------------------------//
+	void Test_Segmentation_Fault(void);
+	static const unsigned int iCountLpFunc = 10;
+	typedef void (*lp_func_other_class) (void);
+	lp_func_other_class lp_func [iCountLpFunc] = {NULL}; 
+
+//------------------------------- Public variables -----------------------------------//
+
+	
+};
+} //namespace
+#endif //DUMP_HPP

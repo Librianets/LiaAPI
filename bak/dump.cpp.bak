@@ -1,0 +1,145 @@
+#include <windows.h>		//win
+//#include <DbgHelp.h>		//win
+
+#include <cstdio>			//c++
+#include <cwchar>			//c++
+#include <csignal>			//c++
+
+#include <dump.hpp>			//liapi
+//#include <debug.hpp>		//liapi
+//#include <winmain.hpp>		//liapi
+
+namespace LIAPI
+{
+
+namespace DUMP
+{
+
+signal(SIGSEGV, SigException);
+
+void SigException(int signum)
+{
+	//ExecuteFunc();
+	/*for (unsigned int x = 0; x < iCountLpFunc; x++)
+	{
+		//if (lp_func[x] != NULL)
+		//{
+			//lp_func[x] ();
+		//} else {}
+	}*/
+	
+	//oogsde::log->WriteLog();
+	
+	signal(signum, SIG_DFL);
+	exit(3);
+}
+	
+}
+
+
+//#include <signal.h>
+//void(*signal(int signr, void(*sighandler)(int)))(int);
+//typedef void signalfunction(int);
+//signalfunction *signal(int signr, signalfunction *sighandler);
+//LIAPI::CDUMP::SigException» из типа «void (LIAPI::CDUMP::)(int)» в тип «__p_sig_fn_t {aka void (*)(int)}»
+//typedef	void (*__p_sig_fn_t)(int);
+//#define SIG_DFL (__p_sig_fn_t)0
+//__p_sig_fn_t __cdecl signal(int _SigNum,__p_sig_fn_t _Func);
+
+
+/*void CDUMP::SigException (int signum)
+{
+
+}*/
+void SigException(int signum)
+{
+	//ExecuteFunc();
+	/*for (unsigned int x = 0; x < iCountLpFunc; x++)
+	{
+		//if (lp_func[x] != NULL)
+		//{
+			//lp_func[x] ();
+		//} else {}
+	}*/
+	
+	//oogsde::log->WriteLog();
+	
+	signal(signum, SIG_DFL);
+	exit(3);
+}
+
+
+void CDUMP::Init(void)
+{
+	signal(SIGSEGV, SigException);
+}
+
+void CDUMP::Deinit(void)
+{
+	signal(SIGSEGV, SIG_DFL);
+}
+
+void CDUMP::Test_Segmentation_Fault(void)
+{
+	int *False_pointer = NULL;
+	*False_pointer = 13;
+}
+
+} // namespace
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/*
+void Sig_exception(int signum)
+{
+	//HANDLE hFile = CreateFileA("qwfffe.dmp", GENERIC_WRITE, 0, NULL, CREATE_ALWAYS, FILE_ATTRIBUTE_NORMAL, NULL);
+	//BOOL qweqwe = MiniDumpWriteDump(GetCurrentProcess(), GetCurrentProcessId(), (HANDLE)hFile, MINIDUMP_TYPE(MiniDumpNormal), NULL, NULL, NULL);
+	//CloseHandle(hFile);
+	
+/* MiniDumpNormal,
+ MiniDumpWithDataSegs,
+ MiniDumpWithFullMemory,
+ MiniDumpWithHandleData,
+ MiniDumpFilterMemory,
+ MiniDumpScanMemory,
+ MiniDumpWithUnloadedModules,
+ MiniDumpWithIndirectlyReferencedMemory,
+ MiniDumpFilterModulePaths,
+ MiniDumpWithProcessThreadData,
+ MiniDumpWithPrivateReadWriteMemory,
+ MiniDumpWithoutOptionalData,
+ MiniDumpWithFullMemoryInfo,
+ MiniDumpWithThreadInfo,
+ MiniDumpWithCodeSegs,
+ MiniDumpWithoutAuxiliaryState,
+ MiniDumpWithFullAuxiliaryState,
+ MiniDumpWithPrivateWriteCopyMemory,
+ MiniDumpIgnoreInaccessibleMemory,
+ MiniDumpWithTokenInformation,
+ MiniDumpWithModuleHeaders,
+ MiniDumpFilterTriage,
+ MiniDumpWithAvxXStateContext,
+ MiniDumpWithIptTr
+
+ signal(signum, SIG_DFL);
+	exit(3);
+}*/

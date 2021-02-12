@@ -1,0 +1,53 @@
+### ### ### ### ### ### ### ### ### ### 
+### ### ### file makefuncs	###	###	### 
+### ### ### ### ### ### ### ### ### ### 
+
+### ### ### общий сборник функций make
+
+### fn_GetStatusFile проверяет существует ли $2, если нет возвращает маркер fn_false, 
+### если да, то проверяет модификацию файла $1 относительно $2 и возвращает fn_false если новее и 
+### fn_true если не новее
+define fn_GetStatusFile
+$(shell function GetStatusFile(){ \
+if ( test -f $2 ); \
+then { if ( test $1 -nt $2 ); then echo fn_false; else echo fn_true; fi; } \
+else echo fn_false; fi; }; GetStatusFile $1 $2; )
+endef
+
+### ### ###
+
+### fn_GetFileCount подсчитывает количество файлов типа $2 в папке $1
+define fn_GetFileCount
+$(shell function GetFileCount()\
+	{ ls $1$2 | wc -l; }; \
+GetFileCount $1 $2; \
+)
+endef
+
+### fn_GetFileList выдает перечень файлов через пробел типа $2 в папке $1
+define fn_GetFileList
+$(strip \
+	$(notdir \
+		$(wildcard \
+			$(shell function GetFileList() { ls $1$2; }; \
+			GetFileList $1 $2;)\
+		)\
+	)\
+)
+endef
+
+define fn_FormatFileobj
+$(strip \
+	$(patsubst %.cpp, %$3.o, $(call fn_GetFileList,$1,$2))\
+)
+endef
+
+
+define fn_Test
+ifeq ($(call fn_GetFileCount,$(d_wrap),*.cpp),1)
+	@echo 1 file
+else
+	@echo $(call fn_GetFileCount,$(d_wrap),*.cpp)
+endif
+endef
+### 42 2 5
